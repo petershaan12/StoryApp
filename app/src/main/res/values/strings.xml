@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">StoryApp</string>
+    <string name="signup">Daftar</string>
+    <string name="login">Masuk</string>
+    <string name="message_welcome_page">Aplikasi #1 untuk Berbagi Cerita Dimanapun, Kapanpun, Siapapun! secepat mungkin</string>
+    <string name="title_welcome_page">Story App</string>
+    <string name="title_signup_page">Berbagi Cerita Dimanapun, Kapanpun, Siapapun!</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="message_login_page">Masukkan dulu datamu ya</string>
+    <string name="title_login_page">Selamat datang kembali 👋</string>
+    <string name="name">Nama</string>
+    <string name="message_main_page">Selamat Belajar di Dicoding.</string>
+    <string name="greeting">Halo %1$s,</string>
+    <string name="logout">Keluar</string>
+    <string name="daftar"><u>Daftar</u></string>
+    <string name="belum_punya_akun">Belum Punya Akun ?</string>
+    <string name="masukkan_email">Masukkan Email</string>
+    <string name="loading">Loading…</string>
+    <string name="tambahkan_deskripsi">Tambahkan Deskripsi....</string>
+    <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
+</resources>
