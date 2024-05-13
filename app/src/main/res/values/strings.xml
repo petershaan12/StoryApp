@@ -19,4 +19,10 @@
     <string name="loading">Loading…</string>
     <string name="tambahkan_deskripsi">Tambahkan Deskripsi....</string>
     <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
+    <string name="foto_story_app_kamu">foto story app kamu</string>
+    <string name="password_error_message">Password harus lebih dari 8 Karaketer</string>
+    <string name="email_error_message">Masukkan email yang Benar</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="maps">Maps</string>
+    <string name="retry">Coba lagi</string>
 </resources>

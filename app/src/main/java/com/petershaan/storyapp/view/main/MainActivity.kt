@@ -4,22 +4,21 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.petershaan.storyapp.R
-import com.petershaan.storyapp.data.ResultState
-import com.petershaan.storyapp.data.remote.response.StoryItem
+import com.petershaan.storyapp.data.remote.database.StoryEntity
 import com.petershaan.storyapp.databinding.ActivityMainBinding
 import com.petershaan.storyapp.view.ViewModelFactory
+import com.petershaan.storyapp.view.adapter.LoadingStateAdapter
 import com.petershaan.storyapp.view.adapter.StoryAdapter
 import com.petershaan.storyapp.view.detail.DetailActivity
+import com.petershaan.storyapp.view.maps.MapsActivity
 import com.petershaan.storyapp.view.upload.CameraActivity
 import com.petershaan.storyapp.view.upload.CameraActivity.Companion.CAMERAX_RESULT
 import com.petershaan.storyapp.view.welcome.WelcomeActivity
@@ -49,7 +48,6 @@ class MainActivity : AppCompatActivity() {
         }
         getRecycle()
         onClickCallback()
-        setUpViewModel()
         setRefresh()
         binding.addStory.setOnClickListener { startCameraX() }
     }
@@ -61,6 +59,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
+            R.id.btn_maps -> {
+                val intent = Intent(this, MapsActivity::class.java)
+                startActivity(intent)
+                true
+            }
             R.id.logoutButton -> {
                 viewModel.logout()
                 val intent = Intent(this, WelcomeActivity::class.java)
@@ -74,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClickCallback() {
         storyAdapter.setOnItemCallback(object : StoryAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: StoryItem) {
+            override fun onItemClicked(data: StoryEntity) {
                 val intent = Intent(    this@MainActivity, DetailActivity::class.java)
                 intent.putExtra(DetailActivity.EXTRA_ID, data.id)
                 startActivity(intent)
@@ -89,28 +92,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getRecycle() {
+        storyAdapter = StoryAdapter()
         binding.rvStory.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             setHasFixedSize(true)
-            adapter = storyAdapter
+            adapter = storyAdapter.withLoadStateFooter(
+                footer = LoadingStateAdapter { storyAdapter.retry() }
+            )
         }
-    }
-
-    private fun setUpViewModel() {
-        viewModel.getAllStory().observe(this) { result ->
-            when (result) {
-                is ResultState.Error -> {
-                    showLoading(false)
-                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
-                    binding.swipeRefresh.isRefreshing = false
-                }
-                is ResultState.Loading -> { showLoading(true) }
-                is ResultState.Success -> {
-                    showLoading(false)
-                    storyAdapter.submitList(result.data)
-                    binding.swipeRefresh.isRefreshing = false
-                }
-            }
+        viewModel.story.observe(this) {
+            storyAdapter.submitData(lifecycle, it)
         }
     }
 

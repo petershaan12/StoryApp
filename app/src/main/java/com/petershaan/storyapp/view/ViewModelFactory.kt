@@ -7,6 +7,7 @@ import com.petershaan.storyapp.di.Injection
 import com.petershaan.storyapp.view.detail.DetailViewModel
 import com.petershaan.storyapp.view.login.LoginViewModel
 import com.petershaan.storyapp.view.main.MainViewModel
+import com.petershaan.storyapp.view.maps.MapsViewModel
 import com.petershaan.storyapp.view.signup.SignupViewModel
 import com.petershaan.storyapp.view.upload.UploadViewModel
 
@@ -29,6 +30,9 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.NewInst
             }
             modelClass.isAssignableFrom(UploadViewModel::class.java) -> {
                 UploadViewModel(Injection.provideStoryRepository(context)) as T
+            }
+            modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
+                MapsViewModel(Injection.provideStoryRepository(context)) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

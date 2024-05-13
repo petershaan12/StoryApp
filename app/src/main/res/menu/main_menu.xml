@@ -5,6 +5,8 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/button_more">
         <menu>
+            <item android:id="@+id/btn_maps"
+                android:title="@string/maps"/>
             <item android:id="@+id/logoutButton"
                 android:title="@string/logout" />
         </menu>

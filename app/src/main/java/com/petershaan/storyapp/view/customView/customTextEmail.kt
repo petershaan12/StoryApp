@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
+import com.petershaan.storyapp.R
 
 class customTextEmail: AppCompatEditText, View.OnTouchListener {
     constructor(context: Context) : super(context) {
@@ -27,7 +28,7 @@ class customTextEmail: AppCompatEditText, View.OnTouchListener {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!s.isNullOrEmpty() && !isValidEmail(s)) error = "Masukkan email yang Benar"
+                if (!s.isNullOrEmpty() && !isValidEmail(s)) error = context.getString(R.string.email_error_message)
             }
 
             override fun afterTextChanged(p0: Editable?) {
