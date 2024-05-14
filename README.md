@@ -20,4 +20,4 @@ This repository is created for sharing and educational purposes only. Plagiarism
     * Room & DataStore
     * API Story (LIVEDATA)
 * Screenshoot
- <img alt="Logo_Bangkit" src="https://raw.githubusercontent.com/petershaan12/GithubUser/master/app/src/main/res/drawable/preview.png?raw=true" width="1000" />
+ <img alt="Logo_Bangkit" src="https://raw.githubusercontent.com/petershaan12/StoryApp/master/app/src/main/res/drawable/preview.jpg" width="1000" />
