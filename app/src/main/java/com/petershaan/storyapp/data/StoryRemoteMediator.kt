@@ -48,11 +48,11 @@ class StoryRemoteMediator(
             }
         }
 
-        return try {
+        try {
             val token = userPreference.getToken().first()
             val responseData = apiService.getAllStory("Bearer $token",page, state.config.pageSize)
             val endOfPaginationReached = responseData.listStory.isEmpty()
-            val StoryItem = responseData.listStory.map {
+            val storyItem = responseData.listStory.map {
                 StoryItem(it.id, it.name, it.photoUrl, it.createdAt, it.description, it.lat, it.lon)
             }
 
@@ -67,11 +67,11 @@ class StoryRemoteMediator(
                     RemoteKeys(id = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
                 database.remoteKeysDao().insertAll(keys)
-                database.storyDao().insertStories(StoryItem)
+                database.storyDao().insertStories(storyItem)
             }
-            MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
+            return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: Exception) {
-            MediatorResult.Error(exception)
+            return MediatorResult.Error(exception)
         }
     }
 
@@ -99,6 +99,10 @@ class StoryRemoteMediator(
 
     private companion object {
         const val INITIAL_PAGE_INDEX = 1
+    }
+
+    fun invalidate() {
+        invalidate()
     }
 
 }

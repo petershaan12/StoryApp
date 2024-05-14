@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.net.toUri
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.petershaan.storyapp.R
 import com.petershaan.storyapp.data.ResultState
@@ -55,7 +56,6 @@ class MainActivity : AppCompatActivity() {
         binding.addStory.setOnClickListener { startCameraX() }
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
@@ -92,6 +92,7 @@ class MainActivity : AppCompatActivity() {
     private fun setRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refreshData()
+            Log.d("Aplikasi Refresh", "Udah Refresh")
         }
     }
 
@@ -106,40 +107,15 @@ class MainActivity : AppCompatActivity() {
         }
         viewModel.story.observe(this) {
             storyAdapter.submitData(lifecycle, it)
-
-//            result ->
-//            when (result) {
-//                is ResultState.Error -> {
-//                    showLoading(false)
-//                    Toast.makeText(this@MainActivity, result.error, Toast.LENGTH_SHORT).show()
-//                    binding.swipeRefresh.isRefreshing = false
-//                }
-//                is ResultState.Loading -> { showLoading(true) }
-//                is ResultState.Success -> {
-//                    showLoading(false)
-//                    binding.swipeRefresh.isRefreshing = false
-//                    storyAdapter.submitList(result.data)
-//                }
-//            }
+        }
+        storyAdapter.addLoadStateListener { loadState ->
+            if (loadState.refresh is LoadState.NotLoading) {
+                binding.swipeRefresh.isRefreshing = false
+            } else if (loadState.refresh is LoadState.Loading) {
+                binding.swipeRefresh.isRefreshing = true
+            }
         }
     }
-
-//    private fun setUpViewModel() {
-//        viewModel.getAllStory2().observe(this) { result ->
-//            when (result) {
-//                is ResultState.Error -> {
-//                    showLoading(false)
-//                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
-//                    binding.swipeRefresh.isRefreshing = false
-//                }
-//                is ResultState.Loading -> { showLoading(true) }
-//                is ResultState.Success -> {
-//                    showLoading(false)
-//                    binding.swipeRefresh.isRefreshing = false
-//                }
-//            }
-//        }
-//    }
 
 
     private fun startCameraX() {
