@@ -71,12 +71,12 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
     implementation("androidx.camera:camera-view:$cameraxVersion")
 
-    implementation("androidx.paging:paging-runtime-ktx:3.1.0")
-    implementation("androidx.room:room-paging:2.4.0-rc01")
+    implementation("androidx.paging:paging-runtime-ktx:3.1.1")
+    implementation("androidx.room:room-paging:2.5.1")
     //Room
     implementation("androidx.room:room-paging:2.5.1")
-    implementation("androidx.room:room-ktx:2.5.1")
-    kapt("androidx.room:room-compiler:2.5.1")
+    implementation("androidx.room:room-ktx:2.6.0-alpha01")
+    kapt("androidx.room:room-compiler:2.6.0-alpha01")
 
     testImplementation("androidx.arch.core:core-testing:2.1.0") // InstantTaskExecutorRule
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1") //TestDispatcher

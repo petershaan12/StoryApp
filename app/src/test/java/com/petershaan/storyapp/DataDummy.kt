@@ -1,17 +1,15 @@
 package com.petershaan.storyapp
 
-import com.petershaan.storyapp.data.remote.response.StoryItem
-
 
 object DataDummy {
-    fun generateDummyStoryResponse(): List<StoryItem> {
-        val items: MutableList<StoryItem> = arrayListOf()
+    fun generateDummyStoryResponse(): List<StoryEntity> {
+        val items: MutableList<StoryEntity> = arrayListOf()
         for (i in 0..100) {
-            val quote = StoryItem(
+            val quote = StoryEntity(
                 i.toString(),
+                "name $i",
                 "photoUrl $i",
                 "createdAt + $i",
-                "name $i",
                 "description $i",
                 0.0,
                 0.0,

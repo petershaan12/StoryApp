@@ -12,13 +12,11 @@ import androidx.activity.viewModels
 import com.bumptech.glide.Glide
 import com.petershaan.storyapp.R
 import com.petershaan.storyapp.data.ResultState
-import com.petershaan.storyapp.databinding.ActivityCameraBinding
 import com.petershaan.storyapp.databinding.ActivityUploadBinding
 import com.petershaan.storyapp.utils.reduceFileImage
 import com.petershaan.storyapp.utils.uriToFile
 import com.petershaan.storyapp.view.ViewModelFactory
 import com.petershaan.storyapp.view.main.MainActivity
-import com.petershaan.storyapp.view.signup.SignupViewModel
 
 class UploadActivity : AppCompatActivity() {
     private val viewModel by viewModels<UploadViewModel> {

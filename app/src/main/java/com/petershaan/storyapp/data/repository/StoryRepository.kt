@@ -11,9 +11,7 @@ import com.petershaan.storyapp.data.ResultState
 import com.petershaan.storyapp.data.StoryPagingSource
 import com.petershaan.storyapp.data.StoryRemoteMediator
 import com.petershaan.storyapp.data.pref.UserPreference
-import com.petershaan.storyapp.data.remote.database.StoryDao
 import com.petershaan.storyapp.data.remote.database.StoryDatabase
-import com.petershaan.storyapp.data.remote.database.StoryEntity
 import com.petershaan.storyapp.data.remote.response.StoryItem
 import com.petershaan.storyapp.data.remote.response.UploadResponse
 import com.petershaan.storyapp.data.remote.retrofit.ApiService
@@ -30,13 +28,12 @@ class StoryRepository private constructor(
     private val apiService: ApiService,
     private val userPreference: UserPreference
 ) {
-    fun getAllStory(): LiveData<PagingData<StoryEntity>> {
+    fun getAllStory(): LiveData<PagingData<StoryItem>> {
         @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
                 pageSize = 5
             ),
-//            pagingSourceFactory = { StoryPagingSource(apiService, userPreference) }
             remoteMediator = StoryRemoteMediator(storyDatabase, userPreference, apiService),
             pagingSourceFactory = {
                 storyDatabase.storyDao().getAllStories()

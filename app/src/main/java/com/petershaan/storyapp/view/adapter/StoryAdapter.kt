@@ -1,16 +1,17 @@
 package com.petershaan.storyapp.view.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.petershaan.storyapp.data.remote.database.StoryEntity
+import com.petershaan.storyapp.data.remote.response.StoryItem
 import com.petershaan.storyapp.databinding.ItemStoryBinding
 import com.petershaan.storyapp.utils.withDateFormat
 
-class StoryAdapter: PagingDataAdapter<StoryEntity, StoryAdapter.ViewHolder>(DIFF_CALLBACK) {
+class StoryAdapter: PagingDataAdapter<StoryItem, StoryAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     private var onItemClickCallback: OnItemClickCallback? = null
 
@@ -27,17 +28,19 @@ class StoryAdapter: PagingDataAdapter<StoryEntity, StoryAdapter.ViewHolder>(DIFF
     }
 
     inner class ViewHolder(private val binding: ItemStoryBinding): RecyclerView.ViewHolder(binding.root) {
-        fun storyData(data: StoryEntity) {
+        fun storyData(data: StoryItem) {
             binding.apply {
                 root.setOnClickListener {
                     onItemClickCallback?.onItemClicked(data)
                 }
+//                Log.d("StoryData", "Ini adalah data: ${data.photoUrl}")
                 Glide.with(itemView)
                     .load(data.photoUrl)
                     .into(ivItemPhoto)
                 tvItemName.text = data.name
                 tvDate.text = data.createdAt?.withDateFormat()
             }
+
         }
     }
 
@@ -46,17 +49,17 @@ class StoryAdapter: PagingDataAdapter<StoryEntity, StoryAdapter.ViewHolder>(DIFF
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: StoryEntity)
+        fun onItemClicked(data: StoryItem)
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<StoryEntity>() {
-            override fun areItemsTheSame(oldItem: StoryEntity, newItem: StoryEntity): Boolean {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<StoryItem>() {
+            override fun areItemsTheSame(oldItem: StoryItem, newItem: StoryItem): Boolean {
                 return oldItem.id == newItem.id
 
             }
 
-            override fun areContentsTheSame(oldItem: StoryEntity, newItem: StoryEntity): Boolean {
+            override fun areContentsTheSame(oldItem: StoryItem, newItem: StoryItem): Boolean {
                 return oldItem == newItem
 
             }

@@ -4,10 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.petershaan.storyapp.data.remote.response.StoryItem
 import com.petershaan.storyapp.data.remote.response.StoryResponse
 
 @Database(
-    entities = [StoryResponse::class, RemoteKeys::class],
+    entities = [StoryItem::class, RemoteKeys::class],
     version = 2,
     exportSchema = false
 )

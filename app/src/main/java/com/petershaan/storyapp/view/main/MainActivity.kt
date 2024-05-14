@@ -4,15 +4,18 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.petershaan.storyapp.R
-import com.petershaan.storyapp.data.remote.database.StoryEntity
+import com.petershaan.storyapp.data.ResultState
+import com.petershaan.storyapp.data.remote.response.StoryItem
 import com.petershaan.storyapp.databinding.ActivityMainBinding
 import com.petershaan.storyapp.view.ViewModelFactory
 import com.petershaan.storyapp.view.adapter.LoadingStateAdapter
@@ -46,11 +49,12 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
+        setRefresh()
         getRecycle()
         onClickCallback()
-        setRefresh()
         binding.addStory.setOnClickListener { startCameraX() }
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -77,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClickCallback() {
         storyAdapter.setOnItemCallback(object : StoryAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: StoryEntity) {
+            override fun onItemClicked(data: StoryItem) {
                 val intent = Intent(    this@MainActivity, DetailActivity::class.java)
                 intent.putExtra(DetailActivity.EXTRA_ID, data.id)
                 startActivity(intent)
@@ -102,8 +106,41 @@ class MainActivity : AppCompatActivity() {
         }
         viewModel.story.observe(this) {
             storyAdapter.submitData(lifecycle, it)
+
+//            result ->
+//            when (result) {
+//                is ResultState.Error -> {
+//                    showLoading(false)
+//                    Toast.makeText(this@MainActivity, result.error, Toast.LENGTH_SHORT).show()
+//                    binding.swipeRefresh.isRefreshing = false
+//                }
+//                is ResultState.Loading -> { showLoading(true) }
+//                is ResultState.Success -> {
+//                    showLoading(false)
+//                    binding.swipeRefresh.isRefreshing = false
+//                    storyAdapter.submitList(result.data)
+//                }
+//            }
         }
     }
+
+//    private fun setUpViewModel() {
+//        viewModel.getAllStory2().observe(this) { result ->
+//            when (result) {
+//                is ResultState.Error -> {
+//                    showLoading(false)
+//                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
+//                    binding.swipeRefresh.isRefreshing = false
+//                }
+//                is ResultState.Loading -> { showLoading(true) }
+//                is ResultState.Success -> {
+//                    showLoading(false)
+//                    binding.swipeRefresh.isRefreshing = false
+//                }
+//            }
+//        }
+//    }
+
 
     private fun startCameraX() {
         val intent = Intent(this, CameraActivity::class.java)
@@ -117,6 +154,8 @@ class MainActivity : AppCompatActivity() {
             currentImageUri = it.data?.getStringExtra(CameraActivity.EXTRA_CAMERAX_IMAGE)?.toUri()
         }
     }
+
+
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE

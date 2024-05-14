@@ -1,14 +1,16 @@
 package com.petershaan.storyapp.view.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.petershaan.storyapp.data.pref.UserModel
-import com.petershaan.storyapp.data.remote.database.StoryEntity
+import com.petershaan.storyapp.data.remote.response.StoryItem
 import com.petershaan.storyapp.data.repository.AuthRepository
 import com.petershaan.storyapp.data.repository.StoryRepository
 import kotlinx.coroutines.launch
@@ -21,7 +23,9 @@ class MainViewModel(storyRepository: StoryRepository, private val repository: Au
         refreshData()
     }
 
-    val story: LiveData<PagingData<StoryEntity>> = storyRepository.getAllStory().cachedIn(viewModelScope)
+    val story: LiveData<PagingData<StoryItem>> = refresh.switchMap {
+        storyRepository.getAllStory().cachedIn(viewModelScope)
+    }
 
     fun refreshData() {
         refresh.value = Unit
